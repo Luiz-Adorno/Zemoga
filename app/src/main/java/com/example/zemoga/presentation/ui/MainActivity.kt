@@ -3,6 +3,7 @@ package com.example.zemoga.presentation.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
@@ -39,6 +40,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     is PostApiState.Failure -> {
                         binding.progressMain.isVisible = false
+                        Toast.makeText(applicationContext, "Fail to load data, check your internet connection", Toast.LENGTH_LONG).show()
                         Log.d("MainActivity", "onCreate: ${it.msg} ")
                     }
                     is PostApiState.Success -> {

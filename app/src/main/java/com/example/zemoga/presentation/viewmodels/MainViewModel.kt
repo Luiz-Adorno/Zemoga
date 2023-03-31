@@ -78,6 +78,8 @@ constructor(
     private fun getSavedPosts() = viewModelScope.launch {
         postStateFlow.value = PostApiState.Loading
         rootUseCases.getAllPostFromLocalUseCase().catch { e ->
+            //if gets error for getting from the local, try get the data from the api
+            getAllPotsFromRemote()
             postStateFlow.value = PostApiState.Failure(e)
         }.collect { data ->
             postStateFlow.value = PostApiState.Success(data)
