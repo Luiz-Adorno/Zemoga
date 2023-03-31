@@ -8,6 +8,9 @@ import com.example.zemoga.data.models.UserItem
 @Dao
 interface ContentDao {
 
+    @Query("SELECT EXISTS(SELECT * FROM posts)")
+    fun hasTable(): Boolean
+
     @Query("SELECT * FROM posts")
     fun getPosts(): List<PostListItem>
 

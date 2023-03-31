@@ -24,84 +24,28 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        loadPostFromRemote()
-        loadUsersFromRemote()
-        loadCommentsFromRemote()
+        mainViewModel.checkIfDataIsSavedInDatabase()
+
+        loadPost()
+
     }
 
-    private fun loadPostFromRemote(){
-        mainViewModel.getAllPotsFromRemote()
+    private fun loadPost(){
         lifecycleScope.launch {
             mainViewModel.receiverPostStateFlow.collect {
                 when (it) {
                     is PostApiState.Loading -> {
-                       // binding.recyclerView.isVisible = false
                         binding.progressMain.isVisible = true
                     }
                     is PostApiState.Failure -> {
-                      //  binding.recyclerView.isVisible = false
                         binding.progressMain.isVisible = false
                         Log.d("MainActivity", "onCreate: ${it.msg} ")
                     }
                     is PostApiState.Success -> {
-                      //  binding.recyclerView.isVisible = true
                         binding.progressMain.isVisible = false
-                       // postAdapter.setData(it.data)
                     }
                     PostApiState.Empty -> {
 
-                    }
-                }
-            }
-        }
-    }
-
-    private fun loadUsersFromRemote(){
-        mainViewModel.getAllUsersFromRemote()
-        lifecycleScope.launch {
-            mainViewModel.receiverUserStateFlow.collect {
-                when (it) {
-                    is UserApiState.Loading -> {
-                        // binding.recyclerView.isVisible = false
-                        binding.progressMain.isVisible = true
-                    }
-                    is UserApiState.Failure -> {
-                        //  binding.recyclerView.isVisible = false
-                        binding.progressMain.isVisible = false
-                        Log.d("MainActivity", "onCreate: ${it.msg} ")
-                    }
-                    is UserApiState.Success -> {
-                        //  binding.recyclerView.isVisible = true
-                        binding.progressMain.isVisible = false
-                        // postAdapter.setData(it.data)
-                    }
-                    UserApiState.Empty -> {
-                    }
-                }
-            }
-        }
-    }
-
-    private fun loadCommentsFromRemote(){
-        mainViewModel.getAllCommentsFromRemote()
-        lifecycleScope.launch {
-            mainViewModel.receiverCommentStateFlow.collect {
-                when (it) {
-                    is CommentApiState.Loading -> {
-                        // binding.recyclerView.isVisible = false
-                        binding.progressMain.isVisible = true
-                    }
-                    is CommentApiState.Failure -> {
-                        //  binding.recyclerView.isVisible = false
-                        binding.progressMain.isVisible = false
-                        Log.d("MainActivity", "onCreate: ${it.msg} ")
-                    }
-                    is CommentApiState.Success -> {
-                        //  binding.recyclerView.isVisible = true
-                        binding.progressMain.isVisible = false
-                        // postAdapter.setData(it.data)
-                    }
-                    CommentApiState.Empty -> {
                     }
                 }
             }

@@ -1,5 +1,6 @@
 package com.example.zemoga.di
 
+import com.example.zemoga.data.local.Database
 import com.example.zemoga.data.remote.api.RetroService
 import com.example.zemoga.domain.repository.Repository
 import com.example.zemoga.domain.repository.RepositoryImpl
@@ -15,7 +16,7 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideRepository(retroService: RetroService): Repository {
-        return RepositoryImpl(retroService)
+    fun provideRepository(retroService: RetroService, database: Database): Repository {
+        return RepositoryImpl(retroService, database.contentDao)
     }
 }

@@ -1,13 +1,19 @@
 package com.example.zemoga.presentation.viewmodels
 
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.zemoga.data.models.CommentItem
+import com.example.zemoga.data.models.PostListItem
+import com.example.zemoga.data.models.UserItem
 import com.example.zemoga.domain.usecase.RootUseCases
 import com.example.zemoga.domain.util.states.CommentApiState
 import com.example.zemoga.domain.util.states.PostApiState
 import com.example.zemoga.domain.util.states.UserApiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -22,38 +28,70 @@ constructor(
 ): ViewModel() {
 
     private val postStateFlow: MutableStateFlow<PostApiState> = MutableStateFlow(PostApiState.Empty)
-    private val commentStateFlow: MutableStateFlow<CommentApiState> = MutableStateFlow(CommentApiState.Empty)
-    private val userStateFlow: MutableStateFlow<UserApiState> = MutableStateFlow(UserApiState.Empty)
 
     val receiverPostStateFlow: StateFlow<PostApiState> = postStateFlow
-    val receiverCommentStateFlow: StateFlow<CommentApiState> = commentStateFlow
-    val receiverUserStateFlow: StateFlow<UserApiState> = userStateFlow
 
-    fun getAllPotsFromRemote() = viewModelScope.launch {
+    private fun getAllPotsFromRemote() = viewModelScope.launch {
         postStateFlow.value = PostApiState.Loading
-
         rootUseCases.getAllPostFromRemoteUseCase().catch { e ->
+            postStateFlow.value = PostApiState.Failure(e)
+        }.collect { data ->
+            postStateFlow.value = PostApiState.Success(data)
+            savePostsInDatabase(data)
+        }
+    }
+
+    private fun getAllCommentsFromRemote() = viewModelScope.launch {
+        rootUseCases.getAllCommentsFromRemoteUseCase().catch { e ->
+            Log.d("MainViewModel", "getAllCommentsFromRemote failure: $e ")
+        }.collect { data ->
+           saveCommentsInDatabase(data)
+        }
+    }
+
+    private fun getAllUsersFromRemote() = viewModelScope.launch {
+        rootUseCases.getAllUserFromRemoteUseCase().catch { e ->
+            Log.d("MainViewModel", "getAllCommentsFromRemote failure: $e ")
+        }.collect { data ->
+           saveUsersInDatabase(data)
+        }
+    }
+
+    private fun savePostsInDatabase(list: List<PostListItem>) {
+        viewModelScope.launch {
+            rootUseCases.savePostsInDatabaseUseCase(list)
+        }
+    }
+
+    private fun saveCommentsInDatabase(list: List<CommentItem>) {
+        viewModelScope.launch {
+            rootUseCases.saveCommentsInDatabaseUseCase(list)
+        }
+    }
+
+    private fun saveUsersInDatabase(list: List<UserItem>) {
+        viewModelScope.launch {
+            rootUseCases.saveUsersInDatabaseUseCase(list)
+        }
+    }
+
+    private fun getSavedPosts() = viewModelScope.launch {
+        postStateFlow.value = PostApiState.Loading
+        rootUseCases.getAllPostFromLocalUseCase().catch { e ->
             postStateFlow.value = PostApiState.Failure(e)
         }.collect { data ->
             postStateFlow.value = PostApiState.Success(data)
         }
     }
 
-    fun getAllCommentsFromRemote() = viewModelScope.launch {
-        commentStateFlow.value = CommentApiState.Loading
-        rootUseCases.getAllCommentsFromRemoteUseCase().catch { e ->
-            commentStateFlow.value = CommentApiState.Failure(e)
-        }.collect { data ->
-            commentStateFlow.value = CommentApiState.Success(data)
-        }
-    }
-
-    fun getAllUsersFromRemote() = viewModelScope.launch {
-        userStateFlow.value = UserApiState.Loading
-        rootUseCases.getAllUserFromRemoteUseCase().catch { e ->
-            userStateFlow.value = UserApiState.Failure(e)
-        }.collect { data ->
-            userStateFlow.value = UserApiState.Success(data)
+    fun checkIfDataIsSavedInDatabase() = viewModelScope.launch(Dispatchers.IO) {
+        val saved = rootUseCases.checkDataIsSavedUseCase()
+        if(saved) {
+            getSavedPosts()
+        } else {
+            getAllPotsFromRemote()
+            getAllUsersFromRemote()
+            getAllCommentsFromRemote()
         }
     }
 }

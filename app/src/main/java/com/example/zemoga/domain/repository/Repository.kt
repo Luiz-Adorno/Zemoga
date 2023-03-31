@@ -13,4 +13,14 @@ interface Repository {
 
     fun getUsersFromRemote(): Flow<List<UserItem>>
 
+    suspend fun insertPostsInDatabase(list: List<PostListItem>)
+
+    suspend fun insertCommentsInDatabase(list: List<CommentItem>)
+
+    suspend fun insertUsersInDatabase(list: List<UserItem>)
+
+    fun getAllPostFromLocal() : Flow<List<PostListItem>>
+
+    suspend fun checkHasTable() : Boolean
+
 }
