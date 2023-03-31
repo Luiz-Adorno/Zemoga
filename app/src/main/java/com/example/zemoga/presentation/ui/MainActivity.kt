@@ -1,6 +1,5 @@
 package com.example.zemoga.presentation.ui
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -11,13 +10,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.zemoga.data.models.PostListItem
 import com.example.zemoga.databinding.ActivityMainBinding
-import com.example.zemoga.domain.util.states.CommentApiState
+import com.example.zemoga.domain.util.Navigator
 import com.example.zemoga.domain.util.states.PostApiState
-import com.example.zemoga.domain.util.states.UserApiState
 import com.example.zemoga.presentation.adapters.PostAdapter
 import com.example.zemoga.presentation.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -25,6 +24,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val mainViewModel: MainViewModel by viewModels()
     private lateinit var postAdapter: PostAdapter
+    @Inject
+    lateinit var navigator: Navigator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,8 +71,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun openPostDetail(post: PostListItem){
-        val detailIntent = Intent(this, PostItemDetailActivity::class.java)
-        detailIntent.putExtra("post_id", post.id)
-        startActivity(detailIntent)
+        navigator.openDetailsActivity(this, postId = post.id)
     }
 }
