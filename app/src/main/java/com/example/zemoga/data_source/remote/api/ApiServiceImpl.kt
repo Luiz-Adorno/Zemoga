@@ -10,6 +10,6 @@ class ApiServiceImpl
     private val retroService: RetroService
 ) {
     suspend fun getPost(): List<PostListItem> = retroService.getPost()
-    suspend fun getComment(postId: Int): List<CommentItem> = retroService.getComment(postId)
-    suspend fun getUser(userID: Int): List<UserItem> = retroService.getUser(userID)
+    suspend fun getComment(): List<CommentItem> = retroService.getComment()
+    suspend fun getUser(): List<UserItem> = retroService.getUser()
 }

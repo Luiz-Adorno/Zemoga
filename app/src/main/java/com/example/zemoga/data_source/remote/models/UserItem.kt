@@ -1,7 +1,11 @@
 package com.example.zemoga.data_source.remote.models
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+@Entity(tableName = "users")
 data class UserItem(
     val email: String,
+    @PrimaryKey
     val id: Int,
     val name: String,
     val phone: String,
