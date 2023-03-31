@@ -1,4 +1,4 @@
-package com.example.zemoga.domain.util
+package com.example.zemoga.domain.util.states
 
 import com.example.zemoga.data.models.PostListItem
 

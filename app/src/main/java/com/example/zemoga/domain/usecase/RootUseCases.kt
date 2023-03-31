@@ -1,5 +1,7 @@
 package com.example.zemoga.domain.usecase
 
 data class RootUseCases(
-    val getAllPotsFromRemoteUseCase: GetAllPotsFromRemoteUseCase
+    val getAllPostFromRemoteUseCase: GetAllPostFromRemoteUseCase,
+    val getAllCommentsFromRemoteUseCase: GetAllCommentsFromRemoteUseCase,
+    val getAllUserFromRemoteUseCase: GetAllUsersFromRemoteUseCase
 )

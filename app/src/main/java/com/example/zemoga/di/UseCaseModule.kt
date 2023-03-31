@@ -1,7 +1,9 @@
 package com.example.zemoga.di
 
 import com.example.zemoga.domain.repository.Repository
-import com.example.zemoga.domain.usecase.GetAllPotsFromRemoteUseCase
+import com.example.zemoga.domain.usecase.GetAllCommentsFromRemoteUseCase
+import com.example.zemoga.domain.usecase.GetAllPostFromRemoteUseCase
+import com.example.zemoga.domain.usecase.GetAllUsersFromRemoteUseCase
 import com.example.zemoga.domain.usecase.RootUseCases
 import dagger.Module
 import dagger.Provides
@@ -17,7 +19,9 @@ object UseCaseModule {
     @Singleton
     fun provideNoteUseCases(repository: Repository): RootUseCases {
         return RootUseCases(
-            getAllPotsFromRemoteUseCase = GetAllPotsFromRemoteUseCase(repository),
+            getAllPostFromRemoteUseCase = GetAllPostFromRemoteUseCase(repository),
+            getAllCommentsFromRemoteUseCase = GetAllCommentsFromRemoteUseCase(repository),
+            getAllUserFromRemoteUseCase = GetAllUsersFromRemoteUseCase(repository)
         )
     }
 }
