@@ -5,6 +5,6 @@ import com.example.zemoga.data.models.UserItem
 sealed class UserApiState{
     object Loading : UserApiState()
     class Failure(val msg:Throwable) : UserApiState()
-    class Success(val data:List<UserItem>) : UserApiState()
+    class Success(val data:UserItem) : UserApiState()
     object Empty : UserApiState()
 }

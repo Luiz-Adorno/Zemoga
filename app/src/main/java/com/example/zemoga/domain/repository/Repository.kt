@@ -23,4 +23,10 @@ interface Repository {
 
     suspend fun checkHasTable() : Boolean
 
+    fun getPostFromDb(id: Int) : Flow<PostListItem>
+
+    fun getUserFromDb(id: Int) : Flow<UserItem>
+
+    fun getCommentsFromDb(id: Int) : Flow<List<CommentItem>>
+
 }

@@ -8,5 +8,8 @@ data class RootUseCases(
     val saveCommentsInDatabaseUseCase: SaveCommentsInDatabaseUseCase,
     val saveUsersInDatabaseUseCase: SaveUsersInDatabaseUseCase,
     val getAllPostFromLocalUseCase: GetAllPostFromLocalUseCase,
-    val checkDataIsSavedUseCase: CheckDataIsSavedUseCase
+    val checkDataIsSavedUseCase: CheckDataIsSavedUseCase,
+    val getPostFromDbUserCase: GetPostFromDbUserCase,
+    val getUserFromDbUserCase: GetUserFromDbUserCase,
+    val getCommentsFromDbUserCase: GetCommentsFromDbUserCase
 )

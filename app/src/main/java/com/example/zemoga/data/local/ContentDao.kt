@@ -15,7 +15,7 @@ interface ContentDao {
     fun getPosts(): List<PostListItem>
 
     @Query("SELECT * FROM posts WHERE id=:id")
-    fun getPost(id: Int): List<PostListItem>
+    fun getPost(id: Int): PostListItem
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPost(posts: List<PostListItem>)

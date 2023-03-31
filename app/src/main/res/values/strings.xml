@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Zemoga</string>
+    <string name="post_comments">Number of comments: </string>
+    <string name="post_created_by">Author:</string>
 </resources>

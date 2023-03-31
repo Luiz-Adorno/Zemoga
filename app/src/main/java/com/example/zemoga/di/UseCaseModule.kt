@@ -24,7 +24,9 @@ object UseCaseModule {
             saveUsersInDatabaseUseCase = SaveUsersInDatabaseUseCase(repository),
             getAllPostFromLocalUseCase = GetAllPostFromLocalUseCase(repository),
             checkDataIsSavedUseCase = CheckDataIsSavedUseCase(repository),
-
+            getPostFromDbUserCase = GetPostFromDbUserCase(repository),
+            getUserFromDbUserCase = GetUserFromDbUserCase(repository),
+            getCommentsFromDbUserCase = GetCommentsFromDbUserCase(repository)
         )
     }
 }

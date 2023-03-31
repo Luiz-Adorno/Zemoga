@@ -8,11 +8,8 @@ import com.example.zemoga.data.models.CommentItem
 import com.example.zemoga.data.models.PostListItem
 import com.example.zemoga.data.models.UserItem
 import com.example.zemoga.domain.usecase.RootUseCases
-import com.example.zemoga.domain.util.states.CommentApiState
-import com.example.zemoga.domain.util.states.PostApiState
-import com.example.zemoga.domain.util.states.UserApiState
+import com.example.zemoga.domain.util.states.PostsApiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -27,16 +24,16 @@ constructor(
     private val rootUseCases: RootUseCases
 ): ViewModel() {
 
-    private val postStateFlow: MutableStateFlow<PostApiState> = MutableStateFlow(PostApiState.Empty)
+    private val postsStateFlow: MutableStateFlow<PostsApiState> = MutableStateFlow(PostsApiState.Empty)
 
-    val receiverPostStateFlow: StateFlow<PostApiState> = postStateFlow
+    val receiverPostsStateFlow: StateFlow<PostsApiState> = postsStateFlow
 
     private fun getAllPotsFromRemote() = viewModelScope.launch {
-        postStateFlow.value = PostApiState.Loading
+        postsStateFlow.value = PostsApiState.Loading
         rootUseCases.getAllPostFromRemoteUseCase().catch { e ->
-            postStateFlow.value = PostApiState.Failure(e)
+            postsStateFlow.value = PostsApiState.Failure(e)
         }.collect { data ->
-            postStateFlow.value = PostApiState.Success(data)
+            postsStateFlow.value = PostsApiState.Success(data)
             savePostsInDatabase(data)
         }
     }
@@ -76,13 +73,13 @@ constructor(
     }
 
     private fun getSavedPosts() = viewModelScope.launch {
-        postStateFlow.value = PostApiState.Loading
+        postsStateFlow.value = PostsApiState.Loading
         rootUseCases.getAllPostFromLocalUseCase().catch { e ->
             //if gets error for getting from the local, try get the data from the api
             getAllPotsFromRemote()
-            postStateFlow.value = PostApiState.Failure(e)
+            postsStateFlow.value = PostsApiState.Failure(e)
         }.collect { data ->
-            postStateFlow.value = PostApiState.Success(data)
+            postsStateFlow.value = PostsApiState.Success(data)
         }
     }
 

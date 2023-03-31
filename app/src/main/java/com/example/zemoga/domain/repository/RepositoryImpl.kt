@@ -46,4 +46,16 @@ class RepositoryImpl(
     override suspend fun checkHasTable(): Boolean {
        return contentDao.hasTable()
     }
+
+    override fun getPostFromDb(id: Int): Flow<PostListItem> = flow {
+        emit(contentDao.getPost(id))
+    }.flowOn(Dispatchers.IO)
+
+    override fun getUserFromDb(id: Int): Flow<UserItem> = flow {
+        emit(contentDao.getUser(id))
+    }.flowOn(Dispatchers.IO)
+
+    override fun getCommentsFromDb(id: Int): Flow<List<CommentItem>> = flow {
+        emit(contentDao.getComments(id))
+    }.flowOn(Dispatchers.IO)
 }

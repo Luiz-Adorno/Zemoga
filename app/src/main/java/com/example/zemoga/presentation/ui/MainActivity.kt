@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.zemoga.data.models.PostListItem
 import com.example.zemoga.databinding.ActivityMainBinding
 import com.example.zemoga.domain.util.Navigator
-import com.example.zemoga.domain.util.states.PostApiState
+import com.example.zemoga.domain.util.states.PostsApiState
 import com.example.zemoga.presentation.adapters.PostAdapter
 import com.example.zemoga.presentation.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,21 +39,21 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadPost(){
         lifecycleScope.launch {
-            mainViewModel.receiverPostStateFlow.collect {
+            mainViewModel.receiverPostsStateFlow.collect {
                 when (it) {
-                    is PostApiState.Loading -> {
+                    is PostsApiState.Loading -> {
                         binding.progressMain.isVisible = true
                     }
-                    is PostApiState.Failure -> {
+                    is PostsApiState.Failure -> {
                         binding.progressMain.isVisible = false
                         Toast.makeText(applicationContext, "Fail to load data, check your internet connection", Toast.LENGTH_LONG).show()
                         Log.d("MainActivity", "onCreate: ${it.msg} ")
                     }
-                    is PostApiState.Success -> {
+                    is PostsApiState.Success -> {
                         binding.progressMain.isVisible = false
                         postAdapter.setData(it.data)
                     }
-                    PostApiState.Empty -> {
+                    PostsApiState.Empty -> {
 
                     }
                 }
