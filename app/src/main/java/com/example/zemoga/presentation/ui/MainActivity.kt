@@ -1,4 +1,4 @@
-package com.example.zemoga
+package com.example.zemoga.presentation.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

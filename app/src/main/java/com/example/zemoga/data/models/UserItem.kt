@@ -1,4 +1,4 @@
-package com.example.zemoga.data_source.remote.models
+package com.example.zemoga.data.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

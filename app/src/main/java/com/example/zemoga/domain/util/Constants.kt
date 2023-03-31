@@ -1,4 +1,4 @@
-package com.example.zemoga.util
+package com.example.zemoga.domain.util
 
 object Constants {
 

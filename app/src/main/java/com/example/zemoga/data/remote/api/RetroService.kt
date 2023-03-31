@@ -1,9 +1,9 @@
-package com.example.zemoga.data_source.remote.api
+package com.example.zemoga.data.remote.api
 
-import com.example.zemoga.data_source.remote.models.CommentItem
-import com.example.zemoga.data_source.remote.models.PostListItem
-import com.example.zemoga.data_source.remote.models.UserItem
-import com.example.zemoga.util.Constants
+import com.example.zemoga.data.models.CommentItem
+import com.example.zemoga.data.models.PostListItem
+import com.example.zemoga.data.models.UserItem
+import com.example.zemoga.domain.util.Constants
 import retrofit2.http.GET
 
 interface RetroService {

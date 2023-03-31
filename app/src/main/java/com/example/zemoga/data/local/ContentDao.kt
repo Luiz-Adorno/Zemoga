@@ -1,9 +1,9 @@
-package com.example.zemoga.data_source.local
+package com.example.zemoga.data.local
 
 import androidx.room.*
-import com.example.zemoga.data_source.remote.models.CommentItem
-import com.example.zemoga.data_source.remote.models.PostListItem
-import com.example.zemoga.data_source.remote.models.UserItem
+import com.example.zemoga.data.models.CommentItem
+import com.example.zemoga.data.models.PostListItem
+import com.example.zemoga.data.models.UserItem
 
 @Dao
 interface ContentDao {
@@ -18,7 +18,7 @@ interface ContentDao {
     suspend fun insertPost(posts: List<PostListItem>)
 
     @Query("SELECT * FROM users WHERE id=:id")
-    fun getUsers(id: Int): UserItem
+    fun getUser(id: Int): UserItem
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertUsers(users: List<UserItem>)

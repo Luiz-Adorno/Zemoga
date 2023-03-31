@@ -2,7 +2,7 @@ package com.example.zemoga.di
 
 import android.app.Application
 import androidx.room.Room
-import com.example.zemoga.data_source.local.Database
+import com.example.zemoga.data.local.Database
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -1,7 +1,7 @@
 package com.example.zemoga.di
 
-import com.example.zemoga.data_source.remote.api.RetroService
-import com.example.zemoga.util.Constants
+import com.example.zemoga.data.remote.api.RetroService
+import com.example.zemoga.domain.util.Constants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -39,7 +39,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideMatchesDbApi(okHttpClient: OkHttpClient): RetroService {
+    fun provideRetrofitServiceApi(okHttpClient: OkHttpClient): RetroService {
         return Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
