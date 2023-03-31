@@ -1,5 +1,6 @@
 package com.example.zemoga.presentation.ui
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -7,10 +8,13 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.zemoga.data.models.PostListItem
 import com.example.zemoga.databinding.ActivityMainBinding
 import com.example.zemoga.domain.util.states.CommentApiState
 import com.example.zemoga.domain.util.states.PostApiState
 import com.example.zemoga.domain.util.states.UserApiState
+import com.example.zemoga.presentation.adapters.PostAdapter
 import com.example.zemoga.presentation.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -20,15 +24,16 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val mainViewModel: MainViewModel by viewModels()
+    private lateinit var postAdapter: PostAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         mainViewModel.checkIfDataIsSavedInDatabase()
-
+        initRecyclerView()
         loadPost()
-
     }
 
     private fun loadPost(){
@@ -45,6 +50,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     is PostApiState.Success -> {
                         binding.progressMain.isVisible = false
+                        postAdapter.setData(it.data)
                     }
                     PostApiState.Empty -> {
 
@@ -52,5 +58,20 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun initRecyclerView() {
+        postAdapter = PostAdapter(ArrayList(), this@MainActivity:: openPostDetail)
+        binding.recyclerView.apply {
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            adapter = postAdapter
+        }
+    }
+
+    private fun openPostDetail(post: PostListItem){
+        val detailIntent = Intent(this, PostItemDetailActivity::class.java)
+        detailIntent.putExtra("post_id", post.id)
+        startActivity(detailIntent)
     }
 }
