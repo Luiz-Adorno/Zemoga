@@ -31,4 +31,7 @@ interface ContentDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertComments(comments: List<CommentItem>)
+
+    @Delete
+    suspend fun deletePost(postListItem: PostListItem): Int
 }

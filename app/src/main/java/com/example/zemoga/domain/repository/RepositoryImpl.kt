@@ -58,4 +58,9 @@ class RepositoryImpl(
     override fun getCommentsFromDb(id: Int): Flow<List<CommentItem>> = flow {
         emit(contentDao.getComments(id))
     }.flowOn(Dispatchers.IO)
+
+    override suspend fun deletePost(postListItem: PostListItem): Int {
+        return contentDao.deletePost(postListItem)
+    }
+
 }

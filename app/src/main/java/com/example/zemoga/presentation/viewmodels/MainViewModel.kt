@@ -8,7 +8,7 @@ import com.example.zemoga.data.models.CommentItem
 import com.example.zemoga.data.models.PostListItem
 import com.example.zemoga.data.models.UserItem
 import com.example.zemoga.domain.usecase.RootUseCases
-import com.example.zemoga.domain.util.states.PostsApiState
+import com.example.zemoga.domain.util.states.GetPostsState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,16 +24,16 @@ constructor(
     private val rootUseCases: RootUseCases
 ): ViewModel() {
 
-    private val postsStateFlow: MutableStateFlow<PostsApiState> = MutableStateFlow(PostsApiState.Empty)
+    private val postsStateFlow: MutableStateFlow<GetPostsState> = MutableStateFlow(GetPostsState.Empty)
 
-    val receiverPostsStateFlow: StateFlow<PostsApiState> = postsStateFlow
+    val receiverPostsStateFlow: StateFlow<GetPostsState> = postsStateFlow
 
     private fun getAllPotsFromRemote() = viewModelScope.launch {
-        postsStateFlow.value = PostsApiState.Loading
+        postsStateFlow.value = GetPostsState.Loading
         rootUseCases.getAllPostFromRemoteUseCase().catch { e ->
-            postsStateFlow.value = PostsApiState.Failure(e)
+            postsStateFlow.value = GetPostsState.Failure(e)
         }.collect { data ->
-            postsStateFlow.value = PostsApiState.Success(data)
+            postsStateFlow.value = GetPostsState.Success(data)
             savePostsInDatabase(data)
         }
     }
@@ -73,13 +73,13 @@ constructor(
     }
 
     private fun getSavedPosts() = viewModelScope.launch {
-        postsStateFlow.value = PostsApiState.Loading
+        postsStateFlow.value = GetPostsState.Loading
         rootUseCases.getAllPostFromLocalUseCase().catch { e ->
             //if gets error for getting from the local, try get the data from the api
             getAllPotsFromRemote()
-            postsStateFlow.value = PostsApiState.Failure(e)
+            postsStateFlow.value = GetPostsState.Failure(e)
         }.collect { data ->
-            postsStateFlow.value = PostsApiState.Success(data)
+            postsStateFlow.value = GetPostsState.Success(data)
         }
     }
 

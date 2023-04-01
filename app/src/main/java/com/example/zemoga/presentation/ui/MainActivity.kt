@@ -1,5 +1,8 @@
 package com.example.zemoga.presentation.ui
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -11,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.zemoga.data.models.PostListItem
 import com.example.zemoga.databinding.ActivityMainBinding
 import com.example.zemoga.domain.util.Navigator
-import com.example.zemoga.domain.util.states.PostsApiState
+import com.example.zemoga.domain.util.states.GetPostsState
 import com.example.zemoga.presentation.adapters.PostAdapter
 import com.example.zemoga.presentation.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,19 +44,19 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             mainViewModel.receiverPostsStateFlow.collect {
                 when (it) {
-                    is PostsApiState.Loading -> {
+                    is GetPostsState.Loading -> {
                         binding.progressMain.isVisible = true
                     }
-                    is PostsApiState.Failure -> {
+                    is GetPostsState.Failure -> {
                         binding.progressMain.isVisible = false
                         Toast.makeText(applicationContext, "Fail to load data, check your internet connection", Toast.LENGTH_LONG).show()
                         Log.d("MainActivity", "onCreate: ${it.msg} ")
                     }
-                    is PostsApiState.Success -> {
+                    is GetPostsState.Success -> {
                         binding.progressMain.isVisible = false
                         postAdapter.setData(it.data)
                     }
-                    PostsApiState.Empty -> {
+                    GetPostsState.Empty -> {
 
                     }
                 }
@@ -72,5 +75,18 @@ class MainActivity : AppCompatActivity() {
 
     private fun openPostDetail(post: PostListItem){
         navigator.openDetailsActivity(this, postId = post.id)
+    }
+
+    companion object {
+        fun newIntent(context: Context) = Intent(context, MainActivity::class.java)
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onResume() {
+        val postDeleted = intent.getBooleanExtra("post_deleted", false)
+        if(postDeleted){
+            postAdapter.notifyDataSetChanged()
+        }
+        super.onResume()
     }
 }
