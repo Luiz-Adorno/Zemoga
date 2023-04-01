@@ -1,14 +1,17 @@
 package com.example.zemoga.presentation.ui
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.zemoga.R
 import com.example.zemoga.databinding.ActivityPostItemDetailBinding
 import com.example.zemoga.domain.util.states.CommentApiState
 import com.example.zemoga.domain.util.states.PostApiState
@@ -17,6 +20,7 @@ import com.example.zemoga.presentation.adapters.CommentAdapter
 import com.example.zemoga.presentation.viewmodels.DetailPostViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+
 @AndroidEntryPoint
 class PostItemDetailActivity : AppCompatActivity() {
 
@@ -32,9 +36,10 @@ class PostItemDetailActivity : AppCompatActivity() {
         val postId = intent.getIntExtra("post_id", -1)
         detailPostViewModel.getPostFromDb(postId)
         getPost()
+        deletePost()
     }
 
-    private fun getPost(){
+    private fun getPost() {
         lifecycleScope.launch {
             detailPostViewModel.receiverPostStateFlow.collect {
                 when (it) {
@@ -60,7 +65,25 @@ class PostItemDetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun getUser(){
+    private fun deletePost() {
+        binding.deleteIcon.setOnClickListener {
+            val dialogBuilder = AlertDialog.Builder(this)
+
+            dialogBuilder.setTitle("Delete Post")
+            dialogBuilder.setMessage("Click Ok to delete post ")
+            dialogBuilder.setPositiveButton(R.string.ok) { dialog, _ ->
+                dialog.dismiss()
+            }
+            dialogBuilder.setNegativeButton(R.string.cancel) { dialog, _ ->
+                dialog.dismiss()
+            }
+            val b = dialogBuilder.create()
+            b.show()
+
+        }
+    }
+
+    private fun getUser() {
         lifecycleScope.launch {
             detailPostViewModel.receiverUserStateFlow.collect {
                 when (it) {
@@ -83,7 +106,7 @@ class PostItemDetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun getComments(){
+    private fun getComments() {
         lifecycleScope.launch {
             detailPostViewModel.receiverCommentStateFlow.collect {
                 when (it) {
