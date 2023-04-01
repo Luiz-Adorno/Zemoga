@@ -28,7 +28,7 @@ constructor(
 
     val receiverPostsStateFlow: StateFlow<GetPostsState> = postsStateFlow
 
-    private fun getAllPotsFromRemote() = viewModelScope.launch {
+    fun getAllPotsFromRemote() = viewModelScope.launch {
         postsStateFlow.value = GetPostsState.Loading
         rootUseCases.getAllPostFromRemoteUseCase().catch { e ->
             postsStateFlow.value = GetPostsState.Failure(e)
