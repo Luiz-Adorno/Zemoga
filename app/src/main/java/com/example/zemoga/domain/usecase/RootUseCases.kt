@@ -12,5 +12,6 @@ data class RootUseCases(
     val getPostFromDbUserCase: GetPostFromDbUserCase,
     val getUserFromDbUserCase: GetUserFromDbUserCase,
     val getCommentsFromDbUserCase: GetCommentsFromDbUserCase,
-    val deletePostUserCase: DeletePostUserCase
+    val deletePostUserCase: DeletePostUserCase,
+    val updatePostUserCase: UpdatePostUserCase
 )

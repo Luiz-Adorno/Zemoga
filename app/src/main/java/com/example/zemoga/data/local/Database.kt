@@ -6,7 +6,7 @@ import com.example.zemoga.data.models.CommentItem
 import com.example.zemoga.data.models.PostListItem
 import com.example.zemoga.data.models.UserItem
 
-@Database(entities = [PostListItem::class, CommentItem::class, UserItem::class], version = 1)
+@Database(entities = [PostListItem::class, CommentItem::class, UserItem::class], version = 2)
 abstract class Database: RoomDatabase() {
 
     abstract val contentDao: ContentDao

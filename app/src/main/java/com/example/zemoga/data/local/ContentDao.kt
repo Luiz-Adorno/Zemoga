@@ -34,4 +34,7 @@ interface ContentDao {
 
     @Delete
     suspend fun deletePost(postListItem: PostListItem): Int
+
+    @Update
+    fun updatePost(postListItem: PostListItem): Int
 }

@@ -27,7 +27,8 @@ object UseCaseModule {
             getPostFromDbUserCase = GetPostFromDbUserCase(repository),
             getUserFromDbUserCase = GetUserFromDbUserCase(repository),
             getCommentsFromDbUserCase = GetCommentsFromDbUserCase(repository),
-            deletePostUserCase = DeletePostUserCase(repository)
+            deletePostUserCase = DeletePostUserCase(repository),
+            updatePostUserCase = UpdatePostUserCase(repository)
         )
     }
 }

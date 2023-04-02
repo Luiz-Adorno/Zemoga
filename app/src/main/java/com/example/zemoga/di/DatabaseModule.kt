@@ -20,6 +20,6 @@ object DatabaseModule {
             app,
             Database::class.java,
             Database.DATABASE_NAME
-        ).build()
+        ).fallbackToDestructiveMigration().build()
     }
 }

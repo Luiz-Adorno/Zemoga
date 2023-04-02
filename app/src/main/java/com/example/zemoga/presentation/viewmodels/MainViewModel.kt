@@ -2,6 +2,7 @@ package com.example.zemoga.presentation.viewmodels
 
 
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.zemoga.data.models.CommentItem
@@ -25,6 +26,7 @@ constructor(
 ): ViewModel() {
 
     private val postsStateFlow: MutableStateFlow<GetPostsState> = MutableStateFlow(GetPostsState.Empty)
+    var updateResult = MutableLiveData<Int>()
 
     val receiverPostsStateFlow: StateFlow<GetPostsState> = postsStateFlow
 
@@ -34,6 +36,10 @@ constructor(
             postsStateFlow.value = GetPostsState.Failure(e)
         }.collect { data ->
             postsStateFlow.value = GetPostsState.Success(data)
+            data.forEach {
+                //At the first data download, favorite posts doesn't exists
+                it.isFavorite = false
+            }
             savePostsInDatabase(data)
         }
     }
@@ -92,5 +98,9 @@ constructor(
             getAllUsersFromRemote()
             getAllCommentsFromRemote()
         }
+    }
+
+    fun updatePost(postListItem: PostListItem) = viewModelScope.launch(Dispatchers.IO) {
+        updateResult.postValue(rootUseCases.updatePostUserCase(postListItem))
     }
 }

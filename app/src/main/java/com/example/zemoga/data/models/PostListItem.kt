@@ -8,5 +8,6 @@ data class PostListItem(
     @PrimaryKey
     val id: Int,
     val title: String,
-    val userId: Int
+    val userId: Int,
+    var isFavorite: Boolean? = false
 )

@@ -30,4 +30,6 @@ interface Repository {
     fun getCommentsFromDb(id: Int) : Flow<List<CommentItem>>
 
     suspend fun deletePost(postListItem: PostListItem) : Int
+
+    suspend fun updatePost(postListItem: PostListItem): Int
 }

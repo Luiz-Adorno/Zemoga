@@ -63,4 +63,8 @@ class RepositoryImpl(
         return contentDao.deletePost(postListItem)
     }
 
+    override suspend fun updatePost(postListItem: PostListItem): Int {
+        return contentDao.updatePost(postListItem)
+    }
+
 }
