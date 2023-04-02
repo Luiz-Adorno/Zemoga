@@ -32,4 +32,6 @@ interface Repository {
     suspend fun deletePost(postListItem: PostListItem) : Int
 
     suspend fun updatePost(postListItem: PostListItem): Int
+
+    suspend fun deleteAllExceptFavorites(): Int
 }

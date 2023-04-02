@@ -28,7 +28,8 @@ object UseCaseModule {
             getUserFromDbUserCase = GetUserFromDbUserCase(repository),
             getCommentsFromDbUserCase = GetCommentsFromDbUserCase(repository),
             deletePostUserCase = DeletePostUserCase(repository),
-            updatePostUserCase = UpdatePostUserCase(repository)
+            updatePostUserCase = UpdatePostUserCase(repository),
+            deleteAllExceptFavoritesUserCase = DeleteAllExceptFavoritesUserCase(repository)
         )
     }
 }

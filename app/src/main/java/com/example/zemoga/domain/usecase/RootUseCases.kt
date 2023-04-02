@@ -13,5 +13,6 @@ data class RootUseCases(
     val getUserFromDbUserCase: GetUserFromDbUserCase,
     val getCommentsFromDbUserCase: GetCommentsFromDbUserCase,
     val deletePostUserCase: DeletePostUserCase,
-    val updatePostUserCase: UpdatePostUserCase
+    val updatePostUserCase: UpdatePostUserCase,
+    val deleteAllExceptFavoritesUserCase: DeleteAllExceptFavoritesUserCase
 )

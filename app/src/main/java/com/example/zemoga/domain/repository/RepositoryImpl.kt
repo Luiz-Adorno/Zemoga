@@ -67,4 +67,8 @@ class RepositoryImpl(
         return contentDao.updatePost(postListItem)
     }
 
+    override suspend fun deleteAllExceptFavorites(): Int {
+        return contentDao.deleteAllExceptFavorites()
+    }
+
 }

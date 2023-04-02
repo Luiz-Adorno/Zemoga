@@ -17,6 +17,7 @@ import com.example.zemoga.domain.util.Navigator
 import com.example.zemoga.domain.util.states.GetPostsState
 import com.example.zemoga.presentation.adapters.PostAdapter
 import com.example.zemoga.presentation.viewmodels.MainViewModel
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -38,6 +39,8 @@ class MainActivity : AppCompatActivity() {
         mainViewModel.checkIfDataIsSavedInDatabase()
         initRecyclerView()
         loadPost()
+        floatButton()
+        deleteAllExceptFavoriteOnes()
     }
 
     private fun loadPost() {
@@ -64,6 +67,29 @@ class MainActivity : AppCompatActivity() {
 
                     }
                 }
+            }
+        }
+    }
+
+    private fun floatButton(){
+        binding.fab.setOnClickListener { view ->
+            mainViewModel.getAllPotsFromRemote()
+            Snackbar.make(view,"Reload data from api", Snackbar.LENGTH_LONG)
+                .setAction("Action", null)
+                .show()
+        }
+    }
+
+    private fun deleteAllExceptFavoriteOnes(){
+        binding.deleteUnfavorites.setOnClickListener {
+            mainViewModel.deleteAllExceptFavorites()
+        }
+        mainViewModel.deleteExceptFavoriteResult.observe(this){
+            //0 if no row deleted.
+            if(it == 0){
+                Toast.makeText(applicationContext, "Fail to delete unfavorite post, please try again", Toast.LENGTH_SHORT).show()
+            } else {
+                mainViewModel.getSavedPosts()
             }
         }
     }
@@ -96,7 +122,7 @@ class MainActivity : AppCompatActivity() {
             if(it == 0){
                 Toast.makeText(applicationContext, "Fail to favorite/unfavorite post, please try again", Toast.LENGTH_SHORT).show()
             } else {
-                loadPost()
+                mainViewModel.getSavedPosts()
             }
         }
     }

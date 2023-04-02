@@ -27,6 +27,7 @@ constructor(
 
     private val postsStateFlow: MutableStateFlow<GetPostsState> = MutableStateFlow(GetPostsState.Empty)
     var updateResult = MutableLiveData<Int>()
+    var deleteExceptFavoriteResult = MutableLiveData<Int>()
 
     val receiverPostsStateFlow: StateFlow<GetPostsState> = postsStateFlow
 
@@ -78,7 +79,7 @@ constructor(
         }
     }
 
-    private fun getSavedPosts() = viewModelScope.launch {
+    fun getSavedPosts() = viewModelScope.launch {
         postsStateFlow.value = GetPostsState.Loading
         rootUseCases.getAllPostFromLocalUseCase().catch { e ->
             //if gets error for getting from the local, try get the data from the api
@@ -102,5 +103,9 @@ constructor(
 
     fun updatePost(postListItem: PostListItem) = viewModelScope.launch(Dispatchers.IO) {
         updateResult.postValue(rootUseCases.updatePostUserCase.invoke(postListItem))
+    }
+
+    fun deleteAllExceptFavorites() = viewModelScope.launch(Dispatchers.IO) {
+        deleteExceptFavoriteResult.postValue(rootUseCases.deleteAllExceptFavoritesUserCase.invoke())
     }
 }

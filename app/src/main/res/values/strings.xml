@@ -4,5 +4,6 @@
     <string name="post_created_by">Author:</string>
     <string name="ok">"OK"</string>
     <string name="cancel">"Cancel"</string>
+    <string name="delete_unfv">Delete unfavorites posts</string>
 
 </resources>

@@ -37,4 +37,7 @@ interface ContentDao {
 
     @Update
     fun updatePost(postListItem: PostListItem): Int
+
+    @Query("DELETE FROM posts WHERE isFavorite = 0")
+    fun deleteAllExceptFavorites(): Int
 }
