@@ -12,9 +12,8 @@ class Navigator @Inject constructor() : Navigation {
         context.startActivity(activateIntent)
     }
 
-    override fun openMainActivity(context: Context, cameFromDeletedPost: Boolean) {
+    override fun openMainActivity(context: Context) {
         val activateIntent = MainActivity.newIntent(context = context)
-        activateIntent.putExtra("post_deleted", true)
         context.startActivity(activateIntent)
     }
 }
@@ -22,5 +21,5 @@ class Navigator @Inject constructor() : Navigation {
 interface Navigation {
     fun openDetailsActivity(context: Context, postId: Int)
 
-    fun openMainActivity(context: Context, cameFromDeletedPost: Boolean)
+    fun openMainActivity(context: Context)
 }

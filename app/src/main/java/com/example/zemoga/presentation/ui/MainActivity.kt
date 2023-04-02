@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity() {
         initRecyclerView()
         loadPost()
         floatButton()
+        reloadDataFromApi()
         deleteAllExceptFavoriteOnes()
     }
 
@@ -71,10 +72,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun floatButton(){
-        binding.fab.setOnClickListener { view ->
+    private fun reloadDataFromApi(){
+        binding.reloadFromRemote.setOnClickListener { view ->
             mainViewModel.getAllPotsFromRemote()
             Snackbar.make(view,"Reload data from api", Snackbar.LENGTH_LONG)
+                .setAction("Action", null)
+                .show()
+        }
+    }
+
+    private fun floatButton(){
+        binding.fab.setOnClickListener { view ->
+            mainViewModel.getSavedPosts()
+            Snackbar.make(view,"Refresh and sort list", Snackbar.LENGTH_LONG)
                 .setAction("Action", null)
                 .show()
         }
@@ -106,6 +116,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun favoritePost(post: PostListItem) {
         post.isFavorite?.let {
             if (it) {
@@ -122,7 +133,7 @@ class MainActivity : AppCompatActivity() {
             if(it == 0){
                 Toast.makeText(applicationContext, "Fail to favorite/unfavorite post, please try again", Toast.LENGTH_SHORT).show()
             } else {
-                mainViewModel.getSavedPosts()
+                postAdapter.notifyDataSetChanged()
             }
         }
     }
@@ -137,10 +148,7 @@ class MainActivity : AppCompatActivity() {
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onResume() {
-        val postDeleted = intent.getBooleanExtra("post_deleted", false)
-        if (postDeleted) {
-            postAdapter.notifyDataSetChanged()
-        }
+        mainViewModel.getSavedPosts()
         super.onResume()
     }
 }
