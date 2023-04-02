@@ -40,21 +40,25 @@ class MainActivity : AppCompatActivity() {
         loadPost()
     }
 
-    private fun loadPost(){
+    private fun loadPost() {
         lifecycleScope.launch {
-            mainViewModel.receiverPostsStateFlow.collect {
-                when (it) {
+            mainViewModel.receiverPostsStateFlow.collect { posts ->
+                when (posts) {
                     is GetPostsState.Loading -> {
                         binding.progressMain.isVisible = true
                     }
                     is GetPostsState.Failure -> {
                         binding.progressMain.isVisible = false
-                        Toast.makeText(applicationContext, "Fail to load data, check your internet connection", Toast.LENGTH_LONG).show()
-                        Log.d("MainActivity", "onCreate: ${it.msg} ")
+                        Toast.makeText(
+                            applicationContext,
+                            "Fail to load data, check your internet connection",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        Log.d("MainActivity", "onCreate: ${posts.msg} ")
                     }
                     is GetPostsState.Success -> {
                         binding.progressMain.isVisible = false
-                        postAdapter.setData(it.data)
+                        postAdapter.setData(posts.data)
                     }
                     GetPostsState.Empty -> {
 
@@ -65,7 +69,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initRecyclerView() {
-        postAdapter = PostAdapter(ArrayList(), this@MainActivity:: openPostDetail)
+        postAdapter = PostAdapter(
+            ArrayList(), this@MainActivity::openPostDetail,
+            this@MainActivity::favoritePost
+        )
         binding.recyclerView.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(this@MainActivity)
@@ -73,7 +80,28 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun openPostDetail(post: PostListItem){
+    private fun favoritePost(post: PostListItem) {
+        post.isFavorite?.let {
+            if (it) {
+                post.isFavorite = false
+                mainViewModel.updatePost(post)
+
+            } else {
+                post.isFavorite = true
+                mainViewModel.updatePost(post)
+            }
+        }
+        mainViewModel.updateResult.observe(this){
+            //0 if no row updated.
+            if(it == 0){
+                Toast.makeText(applicationContext, "Fail to favorite/unfavorite post, please try again", Toast.LENGTH_SHORT).show()
+            } else {
+                loadPost()
+            }
+        }
+    }
+
+    private fun openPostDetail(post: PostListItem) {
         navigator.openDetailsActivity(this, postId = post.id)
     }
 
@@ -84,7 +112,7 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("NotifyDataSetChanged")
     override fun onResume() {
         val postDeleted = intent.getBooleanExtra("post_deleted", false)
-        if(postDeleted){
+        if (postDeleted) {
             postAdapter.notifyDataSetChanged()
         }
         super.onResume()

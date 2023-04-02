@@ -101,6 +101,6 @@ constructor(
     }
 
     fun updatePost(postListItem: PostListItem) = viewModelScope.launch(Dispatchers.IO) {
-        updateResult.postValue(rootUseCases.updatePostUserCase(postListItem))
+        updateResult.postValue(rootUseCases.updatePostUserCase.invoke(postListItem))
     }
 }
