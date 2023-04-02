@@ -29,6 +29,8 @@ class MainViewModelTest{
 
     private val dispatcher = TestCoroutineDispatcher()
 
+    private val viewModel = instantiateViewModel()
+
     @Before
     fun setup() {
         Dispatchers.setMain(dispatcher)
@@ -41,7 +43,7 @@ class MainViewModelTest{
 
     @Test
     fun `when viewModel fetches data then it should call the repository`(){
-        val viewModel = instantiateViewModel()
+
 
         val mockedList = PostFactory.post
         every { rootUseCases.getAllPostFromRemoteUseCase() } returns MutableStateFlow(mockedList)
@@ -52,6 +54,17 @@ class MainViewModelTest{
 
     }
 
+    @Test
+    fun `when viewModel fetches data from local then it should call the repository`(){
+
+        val mockedList = PostFactory.post
+        every { rootUseCases.getAllPostFromLocalUseCase() } returns MutableStateFlow(mockedList)
+
+        viewModel.getSavedPosts()
+
+        verify { rootUseCases.getAllPostFromLocalUseCase() }
+
+    }
 
     private fun instantiateViewModel(): MainViewModel{
         return MainViewModel(rootUseCases)
