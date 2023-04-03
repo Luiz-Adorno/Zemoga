@@ -148,7 +148,10 @@ class MainActivity : AppCompatActivity() {
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onResume() {
-        mainViewModel.getSavedPosts()
+        val postDeleted = intent.getBooleanExtra("post_deleted", false)
+        if (postDeleted) {
+            postAdapter.notifyDataSetChanged()
+        }
         super.onResume()
     }
 }

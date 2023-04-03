@@ -87,7 +87,7 @@ class PostItemDetailActivity : AppCompatActivity() {
                     } else {
                         Toast.makeText(applicationContext, "Post successfully deleted", Toast.LENGTH_SHORT).show()
                         dialog.dismiss()
-                        navigator.openMainActivity(this)
+                        navigator.openMainActivity(this, cameFromDeletedPost = true)
                     }
                 }
 
