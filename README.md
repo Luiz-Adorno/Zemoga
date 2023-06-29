@@ -7,7 +7,7 @@ An android app that will display a list of post. For that, the [jsonplaceholder]
 - Main Screen
 
 The Main Screen consists of display a list of post title with dynamic height, and have 4 action mechanism, "Favorite and Unfavorite posts", "Delete unfavorites posts", "Reload data from API" and "Refresh list to sort the elements". 
-Each layout initialization, a check function it's called to verify if already exists data saved in the local database, if not, the app will fetch data from API and save in the local database. If exists, the app will get the data from database and display in the screen.
+Each layout initialization, a check function it's called to verify if already exists data saved in the local database (Room), if not, the app will fetch data from API and save in the local database. If exists, the app will get the data from database and display in the screen.
 
 
 <img src="https://user-images.githubusercontent.com/41413741/229391570-47eb1505-87aa-4eee-857b-9d17321e0b9f.png" width="250" />
@@ -26,6 +26,7 @@ Each layout initialization, a check function it's called to verify if already ex
 - [Clean Architecture](https://medium.com/android-dev-hacks/detailed-guide-on-android-clean-architecture-9eab262a9011) - Separation of code in different modules or sections with specific responsibilities making it easier for maintenance and further modification.
 - [Jetpack Libraries](https://developer.android.com/jetpack/androidx/explorer?gclid=Cj0KCQjw0PWRBhDKARIsAPKHFGg1spKQZuAwQdZ1kzALkPlrRRJjWErjAqqvtRWRyduAAoosC_mTZzUaApnyEALw_wcB&gclsrc=aw.ds&case=all&hl=pt-br)
     - [Hilt](https://dagger.dev/hilt/) - Hilt provides a standard way to incorporate Dagger dependency injection into an Android application.
+    - [Room](https://developer.android.com/jetpack/androidx/releases/room) - The Room persistence library provides an abstraction layer over SQLite to allow for more robust database access while harnessing the full power of SQLite.
     - [Android KTX](https://developer.android.com/kotlin/ktx.html) - Provide concise, idiomatic Kotlin to Jetpack and Android platform APIs.
     - [AndroidX](https://developer.android.com/jetpack/androidx) - Major improvement to the original Android [Support Library](https://developer.android.com/topic/libraries/support-library/index), which is no longer maintained.
     - [MVVM](https://developer.android.com/topic/libraries/architecture/viewmodel?gclid=CjwKCAjw-rOaBhA9EiwAUkLV4uTWtmhSLWBc9oaYTl_gJJsgJiF-w2indn-p5PnLtnXKs-9elvGQlxoC1jkQAvD_BwE&gclsrc=aw.ds) - ViewModel is a class that is responsible for preparing and managing the data for an Activity or a Fragment . It also handles the communication of the Activity / Fragment with the rest of the application (e.g. calling the business logic classes).
